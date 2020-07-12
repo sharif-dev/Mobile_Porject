@@ -18,19 +18,36 @@ public class EditActivity extends AppCompatActivity
 {
     private ImageView image;
     private RecyclerView menu;
-    private RecyclerView submenu;
+    private ImageView cancel;
+    private ImageView ok;
+    private ImageView undo;
+    private ImageView redo;
     private Uri imageUri;
     private Bitmap bitmap;
+
+    private Controller controller = Controller.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         image = findViewById(R.id.image_holder);
         menu = findViewById(R.id.menu);
-        submenu = findViewById(R.id.submenu);
+        cancel = findViewById(R.id.cancel_icon);
+        undo = findViewById(R.id.undo_icon);
+        redo = findViewById(R.id.redo_icon);
+        ok = findViewById(R.id.checked_icon);
+
         choosePhoto();
+        controller.makeMenu(menu, EditActivity.this);
+        controller.controlPanel(cancel, undo, redo, ok, EditActivity.this);
     }
 
     private void choosePhoto()
@@ -94,4 +111,5 @@ public class EditActivity extends AppCompatActivity
             }
         }
     }
+
 }

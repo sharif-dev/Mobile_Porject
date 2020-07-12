@@ -6,52 +6,78 @@
     android:background="@color/thumb_background_color"
     tools:context=".EditActivity">
 
+    <RelativeLayout
+        android:id="@+id/controls"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/thumb_background_color"
+        android:layout_alignParentLeft="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+            <ImageView
+                android:id="@+id/cancel_icon"
+                android:src="@drawable/cancel"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+
+            <ImageView
+                android:id="@+id/undo_icon"
+                android:src="@drawable/undo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@id/cancel_icon"
+                android:layout_toRightOf="@id/cancel_icon"/>
+
+            <ImageView
+                android:id="@+id/redo_icon"
+                android:src="@drawable/redo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@+id/undo_icon"
+                android:layout_toRightOf="@+id/undo_icon" />
+
+            <ImageView
+                android:id="@+id/checked_icon"
+                android:src="@drawable/checked"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@id/redo_icon"
+                android:layout_toRightOf="@id/redo_icon" />
+        </RelativeLayout>
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/image_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_above="@id/menu"
+        android:layout_below="@+id/controls"
         android:background="@color/placeholder_background"
-        android:scaleType="fitStart"/>
+        android:scaleType="fitStart" />
 
-    <RelativeLayout
-        android:id="@+id/rel1"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/recycler_size"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@color/thumb_background_color"
-        android:layout_alignParentLeft="true">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/thumbnail_vertical_padding"
-            android:layout_marginTop="@dimen/thumbnail_vertical_padding"
-            android:clipToPadding="false"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rel2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/recycler_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/thumb_background_color"
-        android:layout_above="@+id/rel1"
-        android:layout_alignParentLeft="true">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/submenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/thumbnail_vertical_padding"
-            android:layout_marginTop="@dimen/thumbnail_vertical_padding"
-            android:clipToPadding="false"/>
-
-    </RelativeLayout>
+        android:layout_alignParentLeft="true"
+        android:scrollbars="horizontal">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

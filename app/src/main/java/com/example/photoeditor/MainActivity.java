@@ -17,6 +17,11 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         ImageView gallery = findViewById(R.id.gallery);
         ImageView camera = findViewById(R.id.camera);
         ImageView collage = findViewById(R.id.collage);
