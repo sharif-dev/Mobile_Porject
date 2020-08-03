@@ -2,5 +2,6 @@
 <resources>
     <color name="thumb_background_color">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparent">#80FFFFFF</color>
     <color name="placeholder_background">#222322</color>
 </resources>
