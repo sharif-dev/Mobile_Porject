@@ -8,16 +8,27 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".EditActivity">
 
-    <ImageView
-        android:id="@+id/image_holder"
+    <RelativeLayout
+        android:id="@+id/image_holder_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/menu"
-        android:layout_below="@+id/controls"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:background="@color/placeholder_background"
-        android:scaleType="fitStart"
-        app:layout_constraintBottom_toBottomOf="@+id/controls"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/menu"
+        app:layout_constraintTop_toBottomOf="@+id/controls">
+
+        <ImageView
+            android:id="@+id/image_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/placeholder_background"
+            android:scaleType="fitStart"
+            android:src="@drawable/photo" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/controls"
@@ -83,7 +94,7 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@+id/image_holder"
+        app:layout_constraintBottom_toBottomOf="@+id/image_holder_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/row_editing_tools" />

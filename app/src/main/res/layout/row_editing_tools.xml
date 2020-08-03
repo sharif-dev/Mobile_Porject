@@ -17,7 +17,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/adjust" />
+        tools:src="@drawable/brush" />
 
     <TextView
         android:id="@+id/txtTool"
