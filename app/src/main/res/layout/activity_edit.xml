@@ -1,64 +1,12 @@
-<RelativeLayout android:id="@+id/r"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/thumb_background_color"
+    android:background="@android:color/black"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".EditActivity">
-
-    <RelativeLayout
-        android:id="@+id/controls"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/thumb_background_color"
-        android:layout_alignParentLeft="true">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <ImageView
-                android:id="@+id/cancel_icon"
-                android:src="@drawable/cancel"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"/>
-
-            <ImageView
-                android:id="@+id/undo_icon"
-                android:src="@drawable/undo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toEndOf="@id/cancel_icon"
-                android:layout_toRightOf="@id/cancel_icon"/>
-
-            <ImageView
-                android:id="@+id/redo_icon"
-                android:src="@drawable/redo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toEndOf="@+id/undo_icon"
-                android:layout_toRightOf="@+id/undo_icon" />
-
-            <ImageView
-                android:id="@+id/checked_icon"
-                android:src="@drawable/checked"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toEndOf="@id/redo_icon"
-                android:layout_toRightOf="@id/redo_icon" />
-        </RelativeLayout>
-
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/image_holder"
@@ -67,17 +15,77 @@
         android:layout_above="@id/menu"
         android:layout_below="@+id/controls"
         android:background="@color/placeholder_background"
-        android:scaleType="fitStart" />
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="@+id/controls"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/thumb_background_color"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/cancel_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/cancel" />
+
+        <ImageView
+            android:id="@+id/undo_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toEndOf="@id/cancel_icon"
+            android:layout_toRightOf="@id/cancel_icon"
+            android:src="@drawable/undo" />
+
+        <ImageView
+            android:id="@+id/redo_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toEndOf="@+id/undo_icon"
+            android:layout_toRightOf="@+id/undo_icon"
+            android:src="@drawable/redo" />
+
+        <ImageView
+            android:id="@+id/checked_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toEndOf="@id/redo_icon"
+            android:layout_toRightOf="@id/redo_icon"
+            android:src="@drawable/checked" />
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/recycler_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/thumb_background_color"
-        android:layout_alignParentLeft="true"
-        android:scrollbars="horizontal">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="@+id/image_holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/row_editing_tools" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
