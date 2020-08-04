@@ -8,9 +8,13 @@ import android.os.Bundle;
 
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,6 +43,18 @@ public class MainActivity extends AppCompatActivity
         ImageView gallery = findViewById(R.id.gallery);
         ImageView camera = findViewById(R.id.camera);
         ImageView collage = findViewById(R.id.collage);
+
+
+        Button button = findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(MainActivity.this);
+            }
+        });
 
         gallery.setOnClickListener(new View.OnClickListener()
         {
@@ -102,6 +118,11 @@ public class MainActivity extends AppCompatActivity
                 assert bitmap != null;
                 bitmap = bitmap.copy(Bitmap.Config.ARGB_8888 , true);
                 displayEditActivity();
+            }
+            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+            {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                Uri resultUri = result.getUri();
             }
         }
     }

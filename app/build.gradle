@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.photoeditor"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -36,7 +36,5 @@ dependencies {
     implementation 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'ja.burhanrashid52:photoeditor:1.0.0'
-
-    // crop
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }

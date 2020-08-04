@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.photoeditor.Filters.*;
-import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 
 import java.util.ArrayList;
@@ -122,12 +121,10 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
     {
         for (FilterModel thumb : thumbs)
         {
-            // scaling down the image
             int size = (int)context.getResources().getDimension(R.dimen.thumbnail_size);
             thumb.bitmap = Bitmap.createScaledBitmap(thumb.bitmap, size, size, false);
             if( thumb.filter != null )
                 thumb.bitmap = thumb.filter.processFilter(thumb.bitmap);
-            //cropping circle
             thumb.bitmap = GeneralUtils.generateCircularBitmap(thumb.bitmap);
             processedThumbs.add(thumb);
         }
