@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+<!--        crop-->
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
     </application>
 
 </manifest>

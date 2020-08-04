@@ -64,6 +64,39 @@ public class EditActivity extends AppCompatActivity implements MenuAdapter.OnIte
         initUIWidgets();
     }
 
+    // TODO: remove comments
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//            switch (requestCode) {
+////                case CAMERA_REQUEST:
+////                    mPhotoEditor.clearAllViews();
+////                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+////                    mPhotoEditorView.getSource().setImageBitmap(photo);
+////                    break;
+////                case PICK_REQUEST:
+////                    try {
+////                        mPhotoEditor.clearAllViews();
+////                        Uri uri = data.getData();
+////                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+////                        mPhotoEditorView.getSource().setImageBitmap(bitmap);
+////                    } catch (IOException e) {
+////                        e.printStackTrace();
+////                    }
+////                    break;
+//                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+//                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//                    if (resultCode == RESULT_OK) {
+//                        Uri resultUri = result.getUri();
+//                    } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                        Exception error = result.getError();
+//                    }
+//                    break;
+//            }
+//        }
+//    }
+
     private void initUIWidgets()
     {
         rootView = findViewById(R.id.rootView);
@@ -100,6 +133,10 @@ public class EditActivity extends AppCompatActivity implements MenuAdapter.OnIte
             case ADJUST:
                 break;
             case CROP:
+                // TODO: remove comments
+//                CropImage.activity()
+//                        .setGuidelines(CropImageView.Guidelines.ON)
+//                        .start(this);
                 break;
             case FILTER:
                 showFilter(true);
