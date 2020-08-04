@@ -1,10 +1,10 @@
-package com.example.photoeditor.Filters.SampleFilters;
+package com.example.photoeditor.Filters;
 
-import com.example.photoeditor.Filters.Filter;
-import com.example.photoeditor.Filters.Geometry.Point;
-import com.example.photoeditor.Filters.Subfilters.BrightnessSubFilter;
-import com.example.photoeditor.Filters.Subfilters.ContrastSubFilter;
-import com.example.photoeditor.Filters.Subfilters.ToneCurveSubFilter;
+import com.zomato.photofilters.geometry.Point;
+import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ToneCurveSubFilter;
 
 public class SierraFilter
 {

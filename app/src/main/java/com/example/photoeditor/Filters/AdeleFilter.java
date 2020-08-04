@@ -1,7 +1,8 @@
-package com.example.photoeditor.Filters.SampleFilters;
+package com.example.photoeditor.Filters;
 
-import com.example.photoeditor.Filters.Filter;
-import com.example.photoeditor.Filters.Subfilters.SaturationSubFilter;
+
+import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
 
 public class AdeleFilter
 {

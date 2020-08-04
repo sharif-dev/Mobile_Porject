@@ -19,6 +19,9 @@ import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity
 {
+    static {
+        System.loadLibrary("NativeImageProcessor");
+    }
 
     private Uri imageUri;
     private Bitmap bitmap;

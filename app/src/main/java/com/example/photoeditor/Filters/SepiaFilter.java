@@ -1,13 +1,15 @@
-package com.example.photoeditor.Filters.SampleFilters;
+package com.example.photoeditor.Filters;
 
-import com.example.photoeditor.Filters.Filter;
-import com.example.photoeditor.Filters.Geometry.Point;
-import com.example.photoeditor.Filters.Subfilters.ColorOverlaySubFilter;
-import com.example.photoeditor.Filters.Subfilters.SaturationSubFilter;
-import com.example.photoeditor.Filters.Subfilters.ToneCurveSubFilter;
+import com.zomato.photofilters.geometry.Point;
+import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ToneCurveSubFilter;
 
 public class SepiaFilter
 {
+    public static String name = "Sepia";
+
     public static Filter getFilter()
     {
         Point[] rgbKnots;

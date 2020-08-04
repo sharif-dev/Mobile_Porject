@@ -1,14 +1,14 @@
-package com.example.photoeditor.Filters.SampleFilters;
+package com.example.photoeditor.Filters;
 
-import com.example.photoeditor.Filters.Filter;
-import com.example.photoeditor.Filters.Geometry.Point;
-import com.example.photoeditor.Filters.Subfilters.BrightnessSubFilter;
-import com.example.photoeditor.Filters.Subfilters.ContrastSubFilter;
-import com.example.photoeditor.Filters.Subfilters.ToneCurveSubFilter;
+import com.zomato.photofilters.geometry.Point;
+import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ToneCurveSubFilter;
 
-public class AprilFilter
+public class RiseFilter
 {
-    public static String name = "April";
+    public static String name = "Rise";
 
     public static Filter getFilter()
     {
@@ -26,8 +26,8 @@ public class AprilFilter
         redKnots[3] = new Point(255f, 255f);
 
         Filter filter = new Filter();
-        filter.addSubFilter(new ContrastSubFilter(1.5f));
-        filter.addSubFilter(new BrightnessSubFilter(5));
+        filter.addSubFilter(new ContrastSubFilter(1.9f));
+        filter.addSubFilter(new BrightnessSubFilter(60));
         filter.addSubFilter(new ToneCurveSubFilter(null, redKnots, null, blueKnots));
         return filter;
     }

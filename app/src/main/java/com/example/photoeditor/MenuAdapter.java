@@ -49,7 +49,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
             this.toolIcon = toolIcon;
             this.toolType = toolType;
         }
-
     }
 
     @NonNull
