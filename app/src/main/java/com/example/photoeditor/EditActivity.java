@@ -120,7 +120,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         propertiesBSFragment.setPropertiesChangeListener(this);
         rotationFragment.setToolsChangeListener(this);
 
-        menuAdapter = new MenuAdapter(this);
+        menuAdapter = new MenuAdapter(this, ActivityType.EDITING);
         LinearLayoutManager toolsLinearLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         menu.setLayoutManager(toolsLinearLayoutManager);
@@ -147,18 +147,28 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
         {
-            if (requestCode == CROP_ACTIVITY_CODE
-            ) {
-                photoEditorView.getSource().setImageBitmap(extractCroppedImage(data));
+            switch (requestCode){
+                case CROP_ACTIVITY_CODE:
+                case COLLAGE_ACTIVITY_CODE:
+                    mPhotoEditorView.getSource().setImageBitmap(extractImage(data));
+                    break;
+                case ADJUSTMENT_ACTIVITY_CODE:
+                    mPhotoEditorView.getSource().setImageBitmap(extractAdjustImage(data));
+                    break;
             }
         }
     }
 
-    private Bitmap extractCroppedImage(Intent intent)
-    {
-        byte[] byteArray = intent.getByteArrayExtra("cropped_image");
+    private Bitmap extractImage(Intent intent) {
+        byte[] byteArray = intent.getByteArrayExtra("image");
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
+    private Bitmap extractAdjustImage(Intent intent) {
+        byte[] byteArray = intent.getByteArrayExtra("adjust_image");
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
+
 
     private void initUIWidgets()
     {
@@ -183,10 +193,14 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     {
         switch (toolType)
         {
+            case COLLAGE:
+                showActivity(new Intent(this, CollegeActivity.class), COLLAGE_ACTIVITY_CODE);
+                break;
             case ADJUST:
+                showActivity(new Intent(this, AdjustActivity.class), ADJUSTMENT_ACTIVITY_CODE);
                 break;
             case CROP:
-                showCropActivity();
+                showActivity(new Intent(this, CropActivity.class), CROP_ACTIVITY_CODE);
                 break;
             case FILTER:
                 filterAdapter = new FilterAdapter(this.getApplication(), this, height, width, getImageBitmap());
@@ -244,11 +258,9 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         return stream.toByteArray();
     }
 
-    void showCropActivity()
-    {
-        Intent intent = new Intent(this, CropActivity.class);
-        intent.putExtra("image", convertBitmapToByteArray(getImageBitmap()));
-        startActivityForResult(intent, CROP_ACTIVITY_CODE);
+    void showActivity(Intent intent, int activityCode) {
+        intent.putExtra("image", convertBitmapToByteArraye(getImageBitmap()));
+        startActivityForResult(intent, activityCode);
     }
 
     void showFilter(boolean isVisible)
