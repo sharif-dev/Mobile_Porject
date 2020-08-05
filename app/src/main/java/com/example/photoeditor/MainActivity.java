@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.photoeditor.college.CollageView;
+import com.example.photoeditor.college.CollegeActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -80,6 +82,16 @@ public class MainActivity extends AppCompatActivity
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null)
                     startActivityForResult(takePictureIntent, 1);
+            }
+        });
+
+        collage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(MainActivity.this, CollegeActivity.class);
+                MainActivity.this.startActivity(intent);
             }
         });
     }
