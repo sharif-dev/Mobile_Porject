@@ -66,6 +66,8 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
     private boolean isFilterVisible;
     PhotoEditor photoEditor;
     private PhotoEditorView photoEditorView;
+    private static final int CROP_ACTIVITY_CODE = 8000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -85,38 +87,22 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
         initUIWidgets();
     }
 
-    // TODO: remove comments
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//            switch (requestCode) {
-////                case CAMERA_REQUEST:
-////                    mPhotoEditor.clearAllViews();
-////                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-////                    mPhotoEditorView.getSource().setImageBitmap(photo);
-////                    break;
-////                case PICK_REQUEST:
-////                    try {
-////                        mPhotoEditor.clearAllViews();
-////                        Uri uri = data.getData();
-////                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-////                        mPhotoEditorView.getSource().setImageBitmap(bitmap);
-////                    } catch (IOException e) {
-////                        e.printStackTrace();
-////                    }
-////                    break;
-//                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-//                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//                    if (resultCode == RESULT_OK) {
-//                        Uri resultUri = result.getUri();
-//                    } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                        Exception error = result.getError();
-//                    }
-//                    break;
-//            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case CROP_ACTIVITY_CODE:
+                    photoEditorView.getSource().setImageBitmap(extractCroppedImage(data));
+                    break;
+            }
+        }
+    }
+
+    private Bitmap extractCroppedImage(Intent intent) {
+        byte[] byteArray = intent.getByteArrayExtra("cropped_image");
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
 
     private void initUIWidgets()
     {
@@ -153,10 +139,7 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
             case ADJUST:
                 break;
             case CROP:
-                // TODO: remove comments
-//                CropImage.activity()
-//                        .setGuidelines(CropImageView.Guidelines.ON)
-//                        .start(this);
+                showCropActivity();
                 break;
             case FILTER:
                 showFilter(true);
@@ -176,6 +159,25 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
             case EMOJI:
                 break;
         }
+    }
+
+    Bitmap getImageBitmap() {
+        ImageView imageView = photoEditorView.getSource();
+        imageView.invalidate();
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        return drawable.getBitmap();
+    }
+
+    byte[] convertBitmapToByteArraye(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    void showCropActivity() {
+        Intent intent = new Intent(this, CropActivity.class);
+        intent.putExtra("image", convertBitmapToByteArraye(getImageBitmap()));
+        startActivityForResult(intent, CROP_ACTIVITY_CODE);
     }
 
     void showFilter(boolean isVisible)
