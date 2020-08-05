@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -81,8 +82,18 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         }
         catch (NullPointerException e){}
 
-        byte[] byteArray = getIntent().getByteArrayExtra("bitmap");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        Uri imageUri = Uri.parse(getIntent().getStringExtra("uri"));
+        Bitmap bitmap = null;
+        try
+        {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        assert bitmap != null;
+        bitmap = bitmap.copy(Bitmap.Config.ARGB_8888 , true);
 
         initUIWidgets();
 
@@ -329,7 +340,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
 
     private void showSaveDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.ColorPickerDialogTheme);
         builder.setMessage(getString(R.string.msg_save_image));
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener()
         {

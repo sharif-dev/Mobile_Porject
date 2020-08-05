@@ -105,23 +105,19 @@ public class MainActivity extends AppCompatActivity
                 {
                     e.printStackTrace();
                 }
-                assert bitmap != null;
-                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888 , true);
                 displayEditActivity();
             }
             else if (requestCode == PICK_REQUEST)
             {
                 imageUri = data.getData();
-                try
-                {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                assert bitmap != null;
-                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888 , true);
+//                try
+//                {
+//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                }
+//                catch (IOException e)
+//                {
+//                    e.printStackTrace();
+//                }
                 displayEditActivity();
             }
         }
@@ -129,11 +125,11 @@ public class MainActivity extends AppCompatActivity
 
     public void displayEditActivity()
     {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        byte[] byteArray = stream.toByteArray();
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
-        intent.putExtra("bitmap", byteArray);
+//        intent.putExtra("bitmap", byteArray);
         intent.putExtra("uri", imageUri.toString());
         startActivity(intent);
     }
