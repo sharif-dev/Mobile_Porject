@@ -125,7 +125,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
             thumb.bitmap = Bitmap.createScaledBitmap(thumb.bitmap, size, size, false);
             if( thumb.filter != null )
                 thumb.bitmap = thumb.filter.processFilter(thumb.bitmap);
-            thumb.bitmap = GeneralUtils.generateCircularBitmap(thumb.bitmap);
+//            thumb.bitmap = GeneralUtils.generateCircularBitmap(thumb.bitmap);
             processedThumbs.add(thumb);
         }
     }

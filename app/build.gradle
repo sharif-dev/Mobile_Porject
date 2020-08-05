@@ -37,4 +37,5 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'ja.burhanrashid52:photoeditor:1.0.0'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
 }
