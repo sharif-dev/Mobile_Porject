@@ -149,6 +149,17 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
             case BRUSH:
                 break;
             case TEXT:
+                TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this, EditActivity.this);
+                textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor()
+                {
+                    @Override
+                    public void onDone(String inputText, int colorCode)
+                    {
+                        final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                        styleBuilder.withTextColor(colorCode);
+                        photoEditor.addText(inputText, styleBuilder);
+                    }
+                });
                 break;
             case FRAME:
                 break;
@@ -208,8 +219,11 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
     @Override
     public void onFilterSelected(Bitmap bitmap, Filter filter)
     {
-        Bitmap filteredBitmap = filter.processFilter(Bitmap.createScaledBitmap(bitmap, width, height, false));
-        image.setImageBitmap(filteredBitmap);
+        if( filter != null )
+        {
+            Bitmap filteredBitmap = filter.processFilter(Bitmap.createScaledBitmap(bitmap, width, height, false));
+            image.setImageBitmap(filteredBitmap);
+        }
     }
 
     @Override
@@ -219,9 +233,20 @@ public class EditActivity extends AppCompatActivity implements OnPhotoEditorList
     }
 
     @Override
-    public void onEditTextChangeListener(View rootView, String text, int colorCode)
+    public void onEditTextChangeListener(final View rootView, String text, int colorCode)
     {
-
+        TextEditorDialogFragment textEditorDialogFragment =
+                TextEditorDialogFragment.show(this, text, colorCode, EditActivity.this);
+        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor()
+        {
+            @Override
+            public void onDone(String inputText, int colorCode)
+            {
+                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                styleBuilder.withTextColor(colorCode);
+                photoEditor.editText(rootView, inputText, styleBuilder);
+            }
+        });
     }
 
     @Override

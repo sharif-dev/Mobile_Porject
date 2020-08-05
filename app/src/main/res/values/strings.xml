@@ -10,4 +10,5 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="saving">Save</string>
     <string name="sharing">Sharing</string>
+    <string name="done">Done</string>
 </resources>
