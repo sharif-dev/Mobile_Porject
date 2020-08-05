@@ -85,6 +85,16 @@
         app:layout_constraintTop_toTopOf="@+id/menu"
         tools:listitem="@layout/row_filter_view" />
 
+    <RelativeLayout
+        android:id="@+id/rotationBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menu"/>
+
+
+
     <ja.burhanrashid52.photoeditor.PhotoEditorView
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"

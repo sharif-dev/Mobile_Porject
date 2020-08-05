@@ -14,5 +14,7 @@
     <string name="msg_save_image_to_share">Please save image to share</string>
     <string name="msg_share_image">Share Image</string>
     <string name="opacity">Opacity</string>
-    <string name="brush">Brush</string>>
+    <string name="brush">Brush</string>
+    <string name="angle">Angle</string>
+    <string name="zero_degree">0°</string>>
 </resources>

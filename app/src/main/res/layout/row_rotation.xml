@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/thumb_background_color"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/txtDegree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/zero_degree"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"/>
+
+    <SeekBar
+        android:id="@+id/sbDegree"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:progress="50"
+        android:layout_below="@id/txtDegree"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/flip_v"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/flip_vertical"
+        android:layout_toStartOf="@id/sbDegree"/>
+
+    <ImageView
+        android:id="@+id/flip_h"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/flip_horizontal"
+        android:layout_toEndOf="@id/sbDegree"/>
+
+</RelativeLayout>

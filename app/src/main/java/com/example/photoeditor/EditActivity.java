@@ -6,17 +6,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.transition.ChangeBounds;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
+
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -45,7 +50,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         MenuAdapter.OnItemSelected,
         FilterAdapter.OnItemSelected,
         PropertiesBSFragment.Properties,
-        EmojiBSFragment.EmojiListener
+        EmojiBSFragment.EmojiListener,
+        RotationFragment.Tools
 {
     static
     {
@@ -56,18 +62,23 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
 
     private RecyclerView menu, filters;
     Uri saveImageUri;
-    private Bitmap bitmapForFilter;
+    private Bitmap bitmapForChange;
     private int height, width;
     private MenuAdapter menuAdapter;
     private FilterAdapter filterAdapter;
     private EmojiBSFragment emojiBSFragment;
     private PropertiesBSFragment propertiesBSFragment;
+    private RotationFragment rotationFragment;
     private ConstraintLayout rootView;
     private ConstraintSet constraintSet = new ConstraintSet();
     private boolean isFilterVisible;
-    PhotoEditor photoEditor;
+    private boolean isRotationVisible;
+    private PhotoEditor photoEditor;
     private PhotoEditorView photoEditorView;
+    private RelativeLayout rotation;
     private static final int CROP_ACTIVITY_CODE = 8000;
+    private static final int COLLAGE_ACTIVITY_CODE = 8001;
+    private static final int ADJUSTMENT_ACTIVITY_CODE = 8002;
 
 
     @Override
@@ -103,9 +114,11 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
 
         emojiBSFragment = new EmojiBSFragment();
         propertiesBSFragment = new PropertiesBSFragment(EditActivity.this);
+        rotationFragment = new RotationFragment();
 
         emojiBSFragment.setEmojiListener(this);
         propertiesBSFragment.setPropertiesChangeListener(this);
+        rotationFragment.setToolsChangeListener(this);
 
         menuAdapter = new MenuAdapter(this);
         LinearLayoutManager toolsLinearLayoutManager =
@@ -118,6 +131,11 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         filters.setLayoutManager(filtersLinearLayoutManager);
         filters.setAdapter(filterAdapter);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.rotationBar, rotationFragment);
+        fragmentTransaction.commit();
 
         photoEditor = new PhotoEditor.Builder(this, photoEditorView).setPinchTextScalable(true).build();
         photoEditor.setOnPhotoEditorListener(this);
@@ -148,6 +166,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         filters = findViewById(R.id.rvFilterView);
         photoEditorView = findViewById(R.id.photoEditorView);
         menu = findViewById(R.id.menu);
+        rotation = findViewById(R.id.rotationBar);
         ImageView share = findViewById(R.id.share_icon);
         ImageView undo = findViewById(R.id.undo_icon);
         ImageView redo = findViewById(R.id.redo_icon);
@@ -170,9 +189,15 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
                 showCropActivity();
                 break;
             case FILTER:
+                filterAdapter = new FilterAdapter(this.getApplication(), this, height, width, getImageBitmap());
+                LinearLayoutManager filtersLinearLayoutManager =
+                        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                filters.setLayoutManager(filtersLinearLayoutManager);
+                filters.setAdapter(filterAdapter);
                 showFilter(true);
                 break;
             case ROTATE:
+                showRotation(true);
                 break;
             case BRUSH:
                 photoEditor.setBrushDrawingMode(true);
@@ -233,7 +258,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
 
         if (isVisible)
         {
-            bitmapForFilter = getImageBitmap().copy(Bitmap.Config.ARGB_8888 , true);
+            bitmapForChange = getImageBitmap().copy(Bitmap.Config.ARGB_8888 , true);
             constraintSet.clear(filters.getId(), ConstraintSet.START);
             constraintSet.connect(filters.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
             constraintSet.connect(filters.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
@@ -257,12 +282,12 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     {
         if( filter != null )
         {
-            Bitmap filteredBitmap = filter.processFilter(Bitmap.createScaledBitmap(bitmapForFilter, width, height, false));
+            Bitmap filteredBitmap = filter.processFilter(Bitmap.createScaledBitmap(bitmapForChange, width, height, false));
             photoEditorView.getSource().setImageBitmap(filteredBitmap);
         }
         else
         {
-            photoEditorView.getSource().setImageBitmap(bitmapForFilter);
+            photoEditorView.getSource().setImageBitmap(bitmapForChange);
         }
     }
 
@@ -332,6 +357,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     {
         if (isFilterVisible)
             showFilter(false);
+        else if (isRotationVisible)
+            showRotation(false);
         else if (!photoEditor.isCacheEmpty())
             showSaveDialog();
         else
@@ -454,5 +481,61 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     public void onBrushSizeChanged(int brushSize)
     {
         photoEditor.setBrushSize(brushSize);
+    }
+
+    @Override
+    public void onFlipVertical()
+    {
+        Matrix matrix = new Matrix();
+        matrix.postScale(-1, 1, (float) bitmapForChange.getWidth() / 2, (float) bitmapForChange.getHeight() / 2);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapForChange, bitmapForChange.getWidth(), bitmapForChange.getHeight(), true);
+        bitmapForChange = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        photoEditorView.getSource().setImageBitmap(bitmapForChange);
+    }
+
+    @Override
+    public void onFlipHorizontal()
+    {
+        Matrix matrix = new Matrix();
+        matrix.postScale(1, -1, (float) bitmapForChange.getWidth() / 2, (float) bitmapForChange.getHeight() / 2);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapForChange, bitmapForChange.getWidth(), bitmapForChange.getHeight(), true);
+        bitmapForChange = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        photoEditorView.getSource().setImageBitmap(bitmapForChange);
+    }
+
+    @Override
+    public void onAngleChanged(float degree)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapForChange, bitmapForChange.getWidth(), bitmapForChange.getHeight(), true);
+        scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        photoEditorView.getSource().setImageBitmap(scaledBitmap);
+    }
+
+    void showRotation(boolean isVisible)
+    {
+        isRotationVisible = isVisible;
+        constraintSet.clone(rootView);
+
+        if (isVisible)
+        {
+            bitmapForChange = getImageBitmap().copy(Bitmap.Config.ARGB_8888 , true);
+            constraintSet.clear(rotation.getId(), ConstraintSet.START);
+            constraintSet.connect(rotation.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+            constraintSet.connect(rotation.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        }
+        else
+        {
+            constraintSet.connect(rotation.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
+            constraintSet.clear(rotation.getId(), ConstraintSet.END);
+        }
+
+        ChangeBounds changeBounds = new ChangeBounds();
+        changeBounds.setDuration(350);
+        changeBounds.setInterpolator(new AnticipateOvershootInterpolator(1.0f));
+        TransitionManager.beginDelayedTransition(rootView, changeBounds);
+
+        constraintSet.applyTo(rootView);
     }
 }
