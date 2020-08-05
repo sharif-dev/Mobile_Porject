@@ -43,6 +43,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         View.OnClickListener,
         MenuAdapter.OnItemSelected,
         FilterAdapter.OnItemSelected,
+        PropertiesBSFragment.Properties,
         EmojiBSFragment.EmojiListener
 {
     static
@@ -59,6 +60,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     private MenuAdapter menuAdapter;
     private FilterAdapter filterAdapter;
     private EmojiBSFragment emojiBSFragment;
+    private PropertiesBSFragment propertiesBSFragment;
     private ConstraintLayout rootView;
     private ConstraintSet constraintSet = new ConstraintSet();
     private boolean isFilterVisible;
@@ -89,8 +91,10 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         width = photoEditorView.getSource().getDrawable().getIntrinsicWidth();
 
         emojiBSFragment = new EmojiBSFragment();
+        propertiesBSFragment = new PropertiesBSFragment(EditActivity.this);
 
         emojiBSFragment.setEmojiListener(this);
+        propertiesBSFragment.setPropertiesChangeListener(this);
 
         menuAdapter = new MenuAdapter(this);
         LinearLayoutManager toolsLinearLayoutManager =
@@ -160,6 +164,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
             case ROTATE:
                 break;
             case BRUSH:
+                photoEditor.setBrushDrawingMode(true);
+                propertiesBSFragment.show(getSupportFragmentManager(), propertiesBSFragment.getTag());
                 break;
             case TEXT:
                 TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this, EditActivity.this);
@@ -179,6 +185,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
             case BLUR:
                 break;
             case ERASER:
+                photoEditor.brushEraser();
                 break;
             case EMOJI:
                 emojiBSFragment.show(getSupportFragmentManager(), emojiBSFragment.getTag());
@@ -418,5 +425,23 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     public void onEmojiClick(String emojiUnicode)
     {
         photoEditor.addEmoji(emojiUnicode);
+    }
+
+    @Override
+    public void onColorChanged(int colorCode)
+    {
+        photoEditor.setBrushColor(colorCode);
+    }
+
+    @Override
+    public void onOpacityChanged(int opacity)
+    {
+        photoEditor.setOpacity(opacity);
+    }
+
+    @Override
+    public void onBrushSizeChanged(int brushSize)
+    {
+        photoEditor.setBrushSize(brushSize);
     }
 }
