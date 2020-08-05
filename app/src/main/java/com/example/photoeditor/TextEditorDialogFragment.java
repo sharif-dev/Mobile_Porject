@@ -168,6 +168,15 @@ public class TextEditorDialogFragment extends DialogFragment
             }
         });
 
+        addTextCancel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dismiss();
+            }
+        });
+
     }
 
     //Callback to listener if user is done with text editing

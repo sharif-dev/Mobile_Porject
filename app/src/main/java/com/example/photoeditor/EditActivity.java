@@ -42,7 +42,8 @@ import java.io.IOException;
 public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         View.OnClickListener,
         MenuAdapter.OnItemSelected,
-        FilterAdapter.OnItemSelected
+        FilterAdapter.OnItemSelected,
+        EmojiBSFragment.EmojiListener
 {
     static
     {
@@ -57,6 +58,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     private int height, width;
     private MenuAdapter menuAdapter;
     private FilterAdapter filterAdapter;
+    private EmojiBSFragment emojiBSFragment;
     private ConstraintLayout rootView;
     private ConstraintSet constraintSet = new ConstraintSet();
     private boolean isFilterVisible;
@@ -85,6 +87,10 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         photoEditorView.getSource().setImageBitmap(bitmap);
         height = photoEditorView.getSource().getDrawable().getIntrinsicHeight();
         width = photoEditorView.getSource().getDrawable().getIntrinsicWidth();
+
+        emojiBSFragment = new EmojiBSFragment();
+
+        emojiBSFragment.setEmojiListener(this);
 
         menuAdapter = new MenuAdapter(this);
         LinearLayoutManager toolsLinearLayoutManager =
@@ -175,6 +181,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
             case ERASER:
                 break;
             case EMOJI:
+                emojiBSFragment.show(getSupportFragmentManager(), emojiBSFragment.getTag());
                 break;
         }
     }
@@ -407,4 +414,9 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         }
     }
 
+    @Override
+    public void onEmojiClick(String emojiUnicode)
+    {
+        photoEditor.addEmoji(emojiUnicode);
+    }
 }
