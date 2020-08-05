@@ -2,6 +2,8 @@ package com.example.photoeditor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Path;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
         thumbs.add(new FilterModel(thumbImage, HaanFilter.getFilter(), HaanFilter.name, FilterType.HAAN));
         thumbs.add(new FilterModel(thumbImage, LimeStutterFilter.getFilter(), LimeStutterFilter.name, FilterType.LIME_STUTTER));
         thumbs.add(new FilterModel(thumbImage, MarsFilter.getFilter(), MarsFilter.name, FilterType.MARS));
+        thumbs.add(new FilterModel(thumbImage, MayFairFilter.getFilter(), MayFairFilter.name, FilterType.MAY_FAIR));
         thumbs.add(new FilterModel(thumbImage, MetropolisFilter.getFilter(), MetropolisFilter.name, FilterType.METROPOLIS));
         thumbs.add(new FilterModel(thumbImage, MonoChromeFilter.getFilter(), MonoChromeFilter.name, FilterType.MONO_CHROME));
         thumbs.add(new FilterModel(thumbImage, NightWhisperFilter.getFilter(), NightWhisperFilter.name, FilterType.NIGHT_WHISPER));
@@ -125,8 +128,28 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
             thumb.bitmap = Bitmap.createScaledBitmap(thumb.bitmap, size, size, false);
             if( thumb.filter != null )
                 thumb.bitmap = thumb.filter.processFilter(thumb.bitmap);
-//            thumb.bitmap = GeneralUtils.generateCircularBitmap(thumb.bitmap);
+            thumb.bitmap = generateCircularBitmap(thumb.bitmap);
             processedThumbs.add(thumb);
         }
+    }
+
+    private Bitmap generateCircularBitmap(Bitmap input)
+    {
+        final int width = input.getWidth();
+        final int height = input.getHeight();
+        final Bitmap outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        final Path path = new Path();
+        path.addCircle(
+                (float) (width / 2)
+                , (float) (height / 2)
+                , (float) Math.min(width, (height / 2))
+                , Path.Direction.CCW
+        );
+
+        final Canvas canvas = new Canvas(outputBitmap);
+        canvas.clipPath(path);
+        canvas.drawBitmap(input, 0, 0, null);
+        return outputBitmap;
     }
 }

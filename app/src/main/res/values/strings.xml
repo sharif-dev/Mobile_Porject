@@ -5,10 +5,12 @@
     <string name="collage">Collage</string>
     <string name="label_brush">Brush</string>
     <string name="filter">Filter</string>
-    <string name="msg_save_image">Are you want to exit without saving image?</string>
-    <string name="app_intent_name">PhotoEditor</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="saving">Save</string>
     <string name="sharing">Sharing</string>
     <string name="done">Done</string>
+    <string name="msg_save_image">Are you want to exit without saving image ?</string>
+    <string name="app_intent_name">PhotoEditor</string>
+    <string name="msg_save_image_to_share">Please save image to share</string>
+    <string name="msg_share_image">Share Image</string>>
 </resources>

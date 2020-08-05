@@ -3,6 +3,7 @@ package com.example.photoeditor;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,6 +22,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.concurrent.Semaphore;
 
 
 public class MainActivity extends AppCompatActivity
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity
 
     private Uri imageUri;
     private Bitmap bitmap;
+    private static final int CAMERA_REQUEST = 1;
+    private static final int PICK_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,25 +51,22 @@ public class MainActivity extends AppCompatActivity
         ImageView camera = findViewById(R.id.camera);
         ImageView collage = findViewById(R.id.collage);
 
-
-        Button button = findViewById(R.id.button);
-
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(MainActivity.this);
-            }
-        });
-
         gallery.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(gallery, 2);
+                new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Photo"), PICK_REQUEST);
+                    }
+                }).start();
             }
         });
 
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null)
-                    startActivityForResult(takePictureIntent, 1);
+                    startActivityForResult(takePictureIntent, CAMERA_REQUEST);
             }
         });
 
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
         {
-            if (requestCode == 1)
+            if (requestCode == CAMERA_REQUEST)
             {
                 try
                 {
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity
                 bitmap = bitmap.copy(Bitmap.Config.ARGB_8888 , true);
                 displayEditActivity();
             }
-            else if (requestCode == 2)
+            else if (requestCode == PICK_REQUEST)
             {
                 imageUri = data.getData();
                 try
@@ -130,11 +132,6 @@ public class MainActivity extends AppCompatActivity
                 assert bitmap != null;
                 bitmap = bitmap.copy(Bitmap.Config.ARGB_8888 , true);
                 displayEditActivity();
-            }
-            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-            {
-                CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                Uri resultUri = result.getUri();
             }
         }
     }

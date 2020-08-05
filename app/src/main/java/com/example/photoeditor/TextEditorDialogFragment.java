@@ -112,9 +112,8 @@ public class TextEditorDialogFragment extends DialogFragment
             @Override
             public void onClick(View v)
             {
-                ColorPickerDialogBuilder colorPickerDialogBuilder =
                 ColorPickerDialogBuilder
-                        .with(context)
+                        .with(context, R.style.ColorPickerDialogTheme)
                         .setTitle("Choose Color")
                         .initialColor(0xffffffff)
                         .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
@@ -142,12 +141,9 @@ public class TextEditorDialogFragment extends DialogFragment
                             public void onClick(DialogInterface dialog, int which)
                             {
                             }
-                        });
-                Button pButton = colorPickerDialogBuilder.build().getButton(DialogInterface.BUTTON_POSITIVE);
-                Button nButton = colorPickerDialogBuilder.build().getButton(DialogInterface.BUTTON_NEGATIVE);
-                pButton.setTextColor(Color.BLACK);
-                nButton.setTextColor(Color.BLACK);
-                colorPickerDialogBuilder.build().show();
+                        })
+                        .build()
+                        .show();
             }
         });
 
