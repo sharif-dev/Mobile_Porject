@@ -41,7 +41,7 @@ import java.io.IOException;
 public class CollegeActivity extends AppCompatActivity implements EditingToolsAdapter.OnItemSelected{
     private static final int PICK_REQUEST = 53;
     private static final int CAMERA_REQUEST = 52;
-    private EditingToolsAdapter toolsAdapter = new EditingToolsAdapter(this, ActivityType.COLLAGE);
+    private MenuAdapter toolsAdapter = new MenuAdapter(this, ActivityType.COLLAGE);
     private RecyclerView tools;
     Bitmap image;
 

@@ -98,7 +98,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         emojiBSFragment.setEmojiListener(this);
         propertiesBSFragment.setPropertiesChangeListener(this);
 
-        menuAdapter = new MenuAdapter(this);
+        menuAdapter = new MenuAdapter(this, ActivityType.EDITING);
         LinearLayoutManager toolsLinearLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         menu.setLayoutManager(toolsLinearLayoutManager);
