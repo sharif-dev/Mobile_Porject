@@ -17,9 +17,24 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
     private List<ToolModel> toolList = new ArrayList<>();
     private OnItemSelected onItemSelected;
 
-    public MenuAdapter(OnItemSelected onItemSelected)
+    public MenuAdapter(OnItemSelected onItemSelected, ActivityType activityType)
     {
         this.onItemSelected = onItemSelected;
+        switch (activityType) {
+            case EDITING:
+                setEditingActivityTools();
+                break;
+            case COLLAGE:
+                setCollageActivityTools();
+                break;
+        }
+    }
+
+    private void setCollageActivityTools() {
+        mToolList.add(new ToolModel("Camera", R.drawable.ic_camera, ToolType.CAMERA));
+        mToolList.add(new ToolModel("Gallery", R.drawable.ic_gallery, ToolType.GALLERY));
+    }
+    private void setEditingActivityTools() {
         toolList.add(new ToolModel("Adjust", R.drawable.adjust, ToolType.ADJUST));
         toolList.add(new ToolModel("Crop", R.drawable.crop, ToolType.CROP));
         toolList.add(new ToolModel("Filter", R.drawable.filter, ToolType.FILTER));
@@ -30,8 +45,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
         toolList.add(new ToolModel("Blur", R.drawable.blur, ToolType.BLUR));
         toolList.add(new ToolModel("Eraser", R.drawable.eraser, ToolType.ERASER));
         toolList.add(new ToolModel("Emoji", R.drawable.emoji, ToolType.EMOJI));
+        mToolList.add(new ToolModel("Collage", R.drawable.ic_baseline_view_column_24, ToolType.COLLAGE));
     }
-
     public interface OnItemSelected
     {
         void onToolSelected(ToolType toolType);

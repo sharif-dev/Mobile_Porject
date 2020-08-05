@@ -1,42 +1,81 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:splitMotionEvents="true">
 
-    <ImageView
-        android:id="@+id/collageBgView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="#FFD4B081" />
+        android:splitMotionEvents="true"
+        android:id="@+id/colrlid">
 
-    <com.example.photoeditor.college.CollageView
-        android:id="@+id/collageView1"
-        android:layout_width="match_parent"
-        android:layout_height="249dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/daffodils" />
+        <ImageView
+            android:id="@+id/collageBgView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFD4B081" />
 
-    <com.example.photoeditor.college.CollageView
-        android:id="@+id/collageView2"
-        android:layout_width="match_parent"
-        android:layout_height="272dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/green" />
+    </RelativeLayout>
 
-    <com.example.photoeditor.college.CollageView
-        android:id="@+id/collageView3"
-        android:layout_width="match_parent"
-        android:layout_height="264dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/hawaii" />
+    <TextView
+        android:id="@+id/collage_done_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_border_text_view"
+        android:padding="10dp"
+        android:text="Done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
 
-    <com.example.photoeditor.college.CollageView
-        android:id="@+id/collageView4"
-        android:layout_width="match_parent"
-        android:layout_height="253dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/sunset" />
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/collageTools"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/tool_bg"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/row_editing_tools"
+        />
+
+    <TextView
+        android:id="@+id/text_view_id"
+        android:layout_width="270dp"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:text="import more image"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/collageTools" />
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="62dp"
+        android:contentDescription="cancel"
+        android:id="@+id/collage_cancel"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_cancel_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

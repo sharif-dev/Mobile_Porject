@@ -67,6 +67,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     PhotoEditor photoEditor;
     private PhotoEditorView photoEditorView;
     private static final int CROP_ACTIVITY_CODE = 8000;
+    private static final int COLLAGE_ACTIVITY_CODE = 8001;
+    private static final int ADJUSTMENT_ACTIVITY_CODE = 8002;
 
 
     @Override
@@ -118,18 +120,28 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
         {
-            if (requestCode == CROP_ACTIVITY_CODE
-            ) {
-                photoEditorView.getSource().setImageBitmap(extractCroppedImage(data));
+            switch (requestCode){
+                case CROP_ACTIVITY_CODE:
+                case COLLAGE_ACTIVITY_CODE:
+                    mPhotoEditorView.getSource().setImageBitmap(extractImage(data));
+                    break;
+                case ADJUSTMENT_ACTIVITY_CODE:
+                    mPhotoEditorView.getSource().setImageBitmap(extractAdjustImage(data));
+                    break;
             }
         }
     }
 
-    private Bitmap extractCroppedImage(Intent intent)
-    {
-        byte[] byteArray = intent.getByteArrayExtra("cropped_image");
+    private Bitmap extractImage(Intent intent) {
+        byte[] byteArray = intent.getByteArrayExtra("image");
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
+    private Bitmap extractAdjustImage(Intent intent) {
+        byte[] byteArray = intent.getByteArrayExtra("adjust_image");
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
+
 
     private void initUIWidgets()
     {
@@ -153,10 +165,14 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     {
         switch (toolType)
         {
+            case COLLAGE:
+                showActivity(new Intent(this, CollegeActivity.class), COLLAGE_ACTIVITY_CODE);
+                break;
             case ADJUST:
+                showActivity(new Intent(this, AdjustActivity.class), ADJUSTMENT_ACTIVITY_CODE);
                 break;
             case CROP:
-                showCropActivity();
+                showActivity(new Intent(this, CropActivity.class), CROP_ACTIVITY_CODE);
                 break;
             case FILTER:
                 showFilter(true);
@@ -208,11 +224,9 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         return stream.toByteArray();
     }
 
-    void showCropActivity()
-    {
-        Intent intent = new Intent(this, CropActivity.class);
-        intent.putExtra("image", convertBitmapToByteArray(getImageBitmap()));
-        startActivityForResult(intent, CROP_ACTIVITY_CODE);
+    void showActivity(Intent intent, int activityCode) {
+        intent.putExtra("image", convertBitmapToByteArraye(getImageBitmap()));
+        startActivityForResult(intent, activityCode);
     }
 
     void showFilter(boolean isVisible)
