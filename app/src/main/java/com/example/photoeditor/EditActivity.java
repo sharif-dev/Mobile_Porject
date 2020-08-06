@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,7 +61,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         PropertiesBSFragment.Properties,
         EmojiBSFragment.EmojiListener,
         RotationFragment.Tools,
-        AdjustmentFragment.Tools
+        AdjustmentFragment.Tools,
+        FrameAdapter.OnItemSelected
 {
     static
     {
@@ -68,19 +71,20 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
 
     private static final String TAG = EditActivity.class.getSimpleName();
 
-    private RecyclerView menu, filters;
+    private RecyclerView menu, filters, frames;
     Uri saveImageUri;
     private Bitmap bitmapBeforeChange, bitmapAfterChange;
     private int height, width;
     private MenuAdapter menuAdapter;
     private FilterAdapter filterAdapter;
+    private FrameAdapter frameAdapter;
     private EmojiBSFragment emojiBSFragment;
     private PropertiesBSFragment propertiesBSFragment;
     private RotationFragment rotationFragment;
     private AdjustmentFragment adjustmentFragment;
     private ConstraintLayout rootView;
     private ConstraintSet constraintSet = new ConstraintSet();
-    private boolean isFilterVisible, isRotationVisible, isAdjustmentVisible;
+    private boolean isFilterVisible, isRotationVisible, isAdjustmentVisible, isFramesVisible;
     private PhotoEditor photoEditor;
     private PhotoEditorView photoEditorView;
     private RelativeLayout rotation, adjustment;
@@ -145,6 +149,12 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         filters.setLayoutManager(filtersLinearLayoutManager);
         filters.setAdapter(filterAdapter);
 
+        frameAdapter = new FrameAdapter(this.getApplication(), this, bitmap);
+        LinearLayoutManager framesLinearLayoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        frames.setLayoutManager(framesLinearLayoutManager);
+        frames.setAdapter(frameAdapter);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.rotationBar, rotationFragment);
@@ -193,6 +203,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     {
         rootView = findViewById(R.id.rootView);
         filters = findViewById(R.id.rvFilterView);
+        frames = findViewById(R.id.rvFrameView);
         photoEditorView = findViewById(R.id.photoEditorView);
         menu = findViewById(R.id.menu);
         rotation = findViewById(R.id.rotationBar);
@@ -257,6 +268,12 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
                 });
                 break;
             case FRAME:
+                frameAdapter = new FrameAdapter(this.getApplication(), this, getImageBitmap());
+                LinearLayoutManager framesLinearLayoutManager =
+                        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                frames.setLayoutManager(framesLinearLayoutManager);
+                frames.setAdapter(frameAdapter);
+                showFrames(true);
                 break;
             case ERASER:
                 photoEditor.brushEraser();
@@ -400,6 +417,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
             showRotation(false);
         else if (isAdjustmentVisible)
             showAdjustment(false);
+        else if (isFramesVisible)
+            showFrames(false);
         else if (!photoEditor.isCacheEmpty())
             showSaveDialog();
         else
@@ -704,5 +723,47 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
                 photoEditor.redo();
             pointer++;
         }
+    }
+
+    @Override
+    public void onFrameSelected(int i)
+    {
+        Bitmap frame = BitmapFactory.decodeResource(getResources(), i);
+        frame = Bitmap.createScaledBitmap(frame, bitmapBeforeChange.getWidth(), bitmapBeforeChange.getHeight(), true);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setAlpha(255);
+        bitmapAfterChange = bitmapBeforeChange.copy(Bitmap.Config.ARGB_8888 , true);
+        Canvas comboImage = new Canvas(bitmapAfterChange);
+        comboImage.drawBitmap(frame, 0f, 0f, paint);
+        photoEditorView.getSource().setImageBitmap(bitmapAfterChange);
+    }
+
+    void showFrames(boolean isVisible)
+    {
+        isFramesVisible = isVisible;
+        constraintSet.clone(rootView);
+
+        if (isVisible)
+        {
+            bitmapBeforeChange = getImageBitmap().copy(Bitmap.Config.ARGB_8888 , true);
+            constraintSet.clear(frames.getId(), ConstraintSet.START);
+            constraintSet.connect(frames.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+            constraintSet.connect(frames.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        }
+        else
+        {
+            constraintSet.connect(frames.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
+            constraintSet.clear(frames.getId(), ConstraintSet.END);
+            bitmapsToUndo.put(pointer - 1, bitmapBeforeChange.copy(Bitmap.Config.ARGB_8888 , true));
+            bitmapsToRedo.put(pointer - 1, getImageBitmap().copy(Bitmap.Config.ARGB_8888 , true));
+        }
+
+        ChangeBounds changeBounds = new ChangeBounds();
+        changeBounds.setDuration(350);
+        changeBounds.setInterpolator(new AnticipateOvershootInterpolator(1.0f));
+        TransitionManager.beginDelayedTransition(rootView, changeBounds);
+
+        constraintSet.applyTo(rootView);
     }
 }

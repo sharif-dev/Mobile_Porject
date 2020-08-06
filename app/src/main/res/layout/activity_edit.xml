@@ -85,6 +85,18 @@
         app:layout_constraintTop_toTopOf="@+id/menu"
         tools:listitem="@layout/row_filter_view" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFrameView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/thumb_background_color"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menu"
+        tools:listitem="@layout/row_frames" />
+
     <RelativeLayout
         android:id="@+id/rotationBar"
         android:layout_width="0dp"
