@@ -16,5 +16,11 @@
     <string name="opacity">Opacity</string>
     <string name="brush">Brush</string>
     <string name="angle">Angle</string>
-    <string name="zero_degree">0°</string>>
+    <string name="zero_degree">0°</string>
+    <string name="zero">0</string>
+    <string name="saturation">Saturation</string>
+    <string name="brightness">Brightness</string>
+    <string name="contrast">Contrast</string>
+    <string name="one">1</string>
+    <string name="vignette">Vignette</string>>
 </resources>

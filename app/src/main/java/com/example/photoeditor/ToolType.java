@@ -10,6 +10,5 @@ public enum ToolType
     CROP,
     ROTATE,
     FRAME,
-    BLUR,
     ADJUST
 }

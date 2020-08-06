@@ -2,28 +2,19 @@ package com.example.photoeditor;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.photoeditor.college.CollageView;
-import com.example.photoeditor.college.CollegeActivity;
+//import com.example.photoeditor.college.CollegeActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.concurrent.Semaphore;
 
 
 public class MainActivity extends AppCompatActivity
@@ -33,7 +24,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private Uri imageUri;
-    private Bitmap bitmap;
     private static final int CAMERA_REQUEST = 1;
     private static final int PICK_REQUEST = 2;
 
@@ -78,15 +68,15 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        collage.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(MainActivity.this, CollegeActivity.class);
-                MainActivity.this.startActivity(intent);
-            }
-        });
+//        collage.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent = new Intent(MainActivity.this, CollegeActivity.class);
+//                MainActivity.this.startActivity(intent);
+//            }
+//        });
     }
 
     @Override
@@ -97,27 +87,11 @@ public class MainActivity extends AppCompatActivity
         {
             if (requestCode == CAMERA_REQUEST)
             {
-                try
-                {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
                 displayEditActivity();
             }
             else if (requestCode == PICK_REQUEST)
             {
                 imageUri = data.getData();
-//                try
-//                {
-//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                }
-//                catch (IOException e)
-//                {
-//                    e.printStackTrace();
-//                }
                 displayEditActivity();
             }
         }
@@ -125,11 +99,7 @@ public class MainActivity extends AppCompatActivity
 
     public void displayEditActivity()
     {
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        byte[] byteArray = stream.toByteArray();
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
-//        intent.putExtra("bitmap", byteArray);
         intent.putExtra("uri", imageUri.toString());
         startActivity(intent);
     }

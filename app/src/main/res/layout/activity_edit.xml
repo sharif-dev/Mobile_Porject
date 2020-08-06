@@ -93,7 +93,13 @@
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/menu"/>
 
-
+    <RelativeLayout
+        android:id="@+id/adjustmentBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menu"/>
 
     <ja.burhanrashid52.photoeditor.PhotoEditorView
         android:id="@+id/photoEditorView"
