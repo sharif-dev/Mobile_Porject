@@ -7,7 +7,6 @@ public enum ToolType
     ERASER,
     FILTER,
     EMOJI,
-    CROP,
     ROTATE,
     FRAME,
     ADJUST

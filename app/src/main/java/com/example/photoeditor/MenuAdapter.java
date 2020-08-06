@@ -26,7 +26,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
     private void setEditingActivityTools()
     {
         toolList.add(new ToolModel("Adjust", R.drawable.adjust, ToolType.ADJUST));
-        toolList.add(new ToolModel("Crop", R.drawable.crop, ToolType.CROP));
         toolList.add(new ToolModel("Filter", R.drawable.filter, ToolType.FILTER));
         toolList.add(new ToolModel("Rotate", R.drawable.rotate, ToolType.ROTATE));
         toolList.add(new ToolModel("Brush", R.drawable.brush, ToolType.BRUSH));

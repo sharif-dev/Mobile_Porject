@@ -11,11 +11,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.photoeditor.college.CollageView;
-//import com.example.photoeditor.college.CollegeActivity;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
 
 public class MainActivity extends AppCompatActivity
 {
@@ -39,7 +34,6 @@ public class MainActivity extends AppCompatActivity
         catch (NullPointerException e){}
         ImageView gallery = findViewById(R.id.gallery);
         ImageView camera = findViewById(R.id.camera);
-        ImageView collage = findViewById(R.id.collage);
 
         gallery.setOnClickListener(new View.OnClickListener()
         {
@@ -67,16 +61,6 @@ public class MainActivity extends AppCompatActivity
                     startActivityForResult(takePictureIntent, CAMERA_REQUEST);
             }
         });
-
-//        collage.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                Intent intent = new Intent(MainActivity.this, CollegeActivity.class);
-//                MainActivity.this.startActivity(intent);
-//            }
-//        });
     }
 
     @Override

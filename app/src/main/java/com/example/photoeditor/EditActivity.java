@@ -15,9 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.transition.ChangeBounds;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.FragmentManager;
-
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +27,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,18 +39,17 @@ import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.TextStyleBuilder;
 import ja.burhanrashid52.photoeditor.ViewType;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
@@ -93,10 +91,6 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
     private HashMap<Integer, Bitmap> bitmapsToUndo;
     private HashMap<Integer, Bitmap> bitmapsToRedo;
     private int pointer = 0;
-    private static final int CROP_ACTIVITY_CODE = 8000;
-    private static final int COLLAGE_ACTIVITY_CODE = 8001;
-    private static final int ADJUSTMENT_ACTIVITY_CODE = 8002;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -170,35 +164,6 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         photoEditor.setOnPhotoEditorListener(this);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-//    {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK)
-//        {
-//            switch (requestCode){
-//                case CROP_ACTIVITY_CODE:
-//                case COLLAGE_ACTIVITY_CODE:
-//                    mPhotoEditorView.getSource().setImageBitmap(extractImage(data));
-//                    break;
-//                case ADJUSTMENT_ACTIVITY_CODE:
-//                    mPhotoEditorView.getSource().setImageBitmap(extractAdjustImage(data));
-//                    break;
-//            }
-//        }
-//    }
-
-    private Bitmap extractImage(Intent intent) {
-        byte[] byteArray = intent.getByteArrayExtra("image");
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-    }
-
-    private Bitmap extractAdjustImage(Intent intent) {
-        byte[] byteArray = intent.getByteArrayExtra("adjust_image");
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-    }
-
-
     private void initUIWidgets()
     {
         rootView = findViewById(R.id.rootView);
@@ -229,14 +194,8 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         pointer++;
         switch (toolType)
         {
-//            case COLLAGE:
-//                showActivity(new Intent(this, CollegeActivity.class), COLLAGE_ACTIVITY_CODE);
-//                break;
             case ADJUST:
                 showAdjustment(true);
-                break;
-            case CROP:
-                showActivity(new Intent(this, CropActivity.class), CROP_ACTIVITY_CODE);
                 break;
             case FILTER:
                 filterAdapter = new FilterAdapter(this.getApplication(), this, height, width, getImageBitmap());
@@ -290,19 +249,6 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         return drawable.getBitmap();
-    }
-
-    byte[] convertBitmapToByteArray(Bitmap bitmap)
-    {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
-
-    void showActivity(Intent intent, int activityCode)
-    {
-        intent.putExtra("image", convertBitmapToByteArray(getImageBitmap()));
-        startActivityForResult(intent, activityCode);
     }
 
     void showFilter(boolean isVisible)
@@ -703,7 +649,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         {
             ToolType action = actions.get(pointer - 1);
             if( action == ToolType.ADJUST || action == ToolType.FILTER || action == ToolType.ROTATE
-                    || action == ToolType.FRAME || action == ToolType.CROP)
+                    || action == ToolType.FRAME)
                 photoEditorView.getSource().setImageBitmap(bitmapsToUndo.get(pointer - 1));
             else
                 photoEditor.undo();
@@ -717,7 +663,7 @@ public class EditActivity extends BaseActivity implements OnPhotoEditorListener,
         {
             ToolType action = actions.get(pointer);
             if( action == ToolType.ADJUST || action == ToolType.FILTER || action == ToolType.ROTATE
-                    || action == ToolType.FRAME || action == ToolType.CROP)
+                    || action == ToolType.FRAME)
                 photoEditorView.getSource().setImageBitmap(bitmapsToRedo.get(pointer));
             else
                 photoEditor.redo();

@@ -36,9 +36,6 @@ dependencies {
     implementation 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'ja.burhanrashid52:photoeditor:1.0.0'
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     implementation 'com.google.android.material:material:1.1.0'
-//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
-
 }

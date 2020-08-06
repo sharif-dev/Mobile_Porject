@@ -29,30 +29,30 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
     {
         this.onItemSelected = onItemSelected;
         Bitmap thumbImage = Bitmap.createScaledBitmap(bitmap, width, height, false);
-        thumbs.add(new FilterModel(thumbImage, null, "Original", FilterType.NONE));
-        thumbs.add(new FilterModel(thumbImage, AdeleFilter.getFilter(), AdeleFilter.name, FilterType.ADELE));
-        thumbs.add(new FilterModel(thumbImage, AmazonFilter.getFilter(), AmazonFilter.name, FilterType.AMAZON));
-        thumbs.add(new FilterModel(thumbImage, AprilFilter.getFilter(), AprilFilter.name, FilterType.APRIL));
-        thumbs.add(new FilterModel(thumbImage, ArtisticBlackWhiteFilter.getFilter(), ArtisticBlackWhiteFilter.name, FilterType.ARTISTIC_BLACK_WHITE));
-        thumbs.add(new FilterModel(thumbImage, AudreyFilter.getFilter(), AudreyFilter.name, FilterType.AUDREY));
-        thumbs.add(new FilterModel(thumbImage, AweStruckVibeFilter.getFilter(), AweStruckVibeFilter.name, FilterType.AWE_STRUCK_VIBE));
-        thumbs.add(new FilterModel(thumbImage, BlueMessFilter.getFilter(), BlueMessFilter.name, FilterType.BLUE_MESS));
-        thumbs.add(new FilterModel(thumbImage, ClarendonFilter.getFilter(), ClarendonFilter.name, FilterType.CLARENDON));
-        thumbs.add(new FilterModel(thumbImage, CruzFilter.getFilter(), CruzFilter.name, FilterType.CRUZ));
-        thumbs.add(new FilterModel(thumbImage, CutenessFilter.getFilter(), CutenessFilter.name, FilterType.CUTENESS));
-        thumbs.add(new FilterModel(thumbImage, HaanFilter.getFilter(), HaanFilter.name, FilterType.HAAN));
-        thumbs.add(new FilterModel(thumbImage, LimeStutterFilter.getFilter(), LimeStutterFilter.name, FilterType.LIME_STUTTER));
-        thumbs.add(new FilterModel(thumbImage, MarsFilter.getFilter(), MarsFilter.name, FilterType.MARS));
-        thumbs.add(new FilterModel(thumbImage, MayFairFilter.getFilter(), MayFairFilter.name, FilterType.MAY_FAIR));
-        thumbs.add(new FilterModel(thumbImage, MetropolisFilter.getFilter(), MetropolisFilter.name, FilterType.METROPOLIS));
-        thumbs.add(new FilterModel(thumbImage, MonoChromeFilter.getFilter(), MonoChromeFilter.name, FilterType.MONO_CHROME));
-        thumbs.add(new FilterModel(thumbImage, NightWhisperFilter.getFilter(), NightWhisperFilter.name, FilterType.NIGHT_WHISPER));
-        thumbs.add(new FilterModel(thumbImage, OldManFilter.getFilter(), OldManFilter.name, FilterType.OLD_MAN));
-        thumbs.add(new FilterModel(thumbImage, PurplishFilter.getFilter(), PurplishFilter.name, FilterType.PURPLISH));
-        thumbs.add(new FilterModel(thumbImage, RiseFilter.getFilter(), RiseFilter.name, FilterType.RISE));
-        thumbs.add(new FilterModel(thumbImage, SepiaFilter.getFilter(), SepiaFilter.name, FilterType.SEPIA));
-        thumbs.add(new FilterModel(thumbImage, SierraFilter.getFilter(), SierraFilter.name, FilterType.SIERRA));
-        thumbs.add(new FilterModel(thumbImage, StarLitFilter.getFilter(), StarLitFilter.name, FilterType.STAR_LIT));
+        thumbs.add(new FilterModel(thumbImage, null, "Original"));
+        thumbs.add(new FilterModel(thumbImage, AdeleFilter.getFilter(), AdeleFilter.name));
+        thumbs.add(new FilterModel(thumbImage, AmazonFilter.getFilter(), AmazonFilter.name));
+        thumbs.add(new FilterModel(thumbImage, AprilFilter.getFilter(), AprilFilter.name));
+        thumbs.add(new FilterModel(thumbImage, ArtisticBlackWhiteFilter.getFilter(), ArtisticBlackWhiteFilter.name));
+        thumbs.add(new FilterModel(thumbImage, AudreyFilter.getFilter(), AudreyFilter.name));
+        thumbs.add(new FilterModel(thumbImage, AweStruckVibeFilter.getFilter(), AweStruckVibeFilter.name));
+        thumbs.add(new FilterModel(thumbImage, BlueMessFilter.getFilter(), BlueMessFilter.name));
+        thumbs.add(new FilterModel(thumbImage, ClarendonFilter.getFilter(), ClarendonFilter.name));
+        thumbs.add(new FilterModel(thumbImage, CruzFilter.getFilter(), CruzFilter.name));
+        thumbs.add(new FilterModel(thumbImage, CutenessFilter.getFilter(), CutenessFilter.name));
+        thumbs.add(new FilterModel(thumbImage, HaanFilter.getFilter(), HaanFilter.name));
+        thumbs.add(new FilterModel(thumbImage, LimeStutterFilter.getFilter(), LimeStutterFilter.name));
+        thumbs.add(new FilterModel(thumbImage, MarsFilter.getFilter(), MarsFilter.name));
+        thumbs.add(new FilterModel(thumbImage, MayFairFilter.getFilter(), MayFairFilter.name));
+        thumbs.add(new FilterModel(thumbImage, MetropolisFilter.getFilter(), MetropolisFilter.name));
+        thumbs.add(new FilterModel(thumbImage, MonoChromeFilter.getFilter(), MonoChromeFilter.name));
+        thumbs.add(new FilterModel(thumbImage, NightWhisperFilter.getFilter(), NightWhisperFilter.name));
+        thumbs.add(new FilterModel(thumbImage, OldManFilter.getFilter(), OldManFilter.name));
+        thumbs.add(new FilterModel(thumbImage, PurplishFilter.getFilter(), PurplishFilter.name));
+        thumbs.add(new FilterModel(thumbImage, RiseFilter.getFilter(), RiseFilter.name));
+        thumbs.add(new FilterModel(thumbImage, SepiaFilter.getFilter(), SepiaFilter.name));
+        thumbs.add(new FilterModel(thumbImage, SierraFilter.getFilter(), SierraFilter.name));
+        thumbs.add(new FilterModel(thumbImage, StarLitFilter.getFilter(), StarLitFilter.name));
         setupFilters(context);
     }
 
@@ -66,14 +66,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
         private String filterName;
         private Bitmap bitmap;
         private Filter filter;
-        private FilterType filterType;
 
-        public FilterModel(Bitmap bitmap, Filter filter, String filterName, FilterType filterType)
+        public FilterModel(Bitmap bitmap, Filter filter, String filterName)
         {
             this.filterName = filterName;
             this.bitmap = bitmap;
             this.filter = filter;
-            this.filterType = filterType;
         }
     }
 
