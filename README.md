@@ -1,4 +1,8 @@
 # Mobile_Porject
-Photo Editor App
+# Photo Editor App
+
+Roodabeh Safavi
 
 Zahra Fazel
+
+Mohammad Jamshidi
